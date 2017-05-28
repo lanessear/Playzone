@@ -7,8 +7,8 @@ import java.awt.*;
  * Created by Lanessear on 28.05.2017.
  */
 public class DefaultWindow extends JFrame {
-    private JPanel[] panel = new JPanel[4];
-    private JButton[] button = new JButton[6];
+    private JPanel[] panel = new JPanel[6];
+    private JButton[] button = new JButton[5];
     private int sizeX;
     private int sizeY;
 
@@ -17,15 +17,15 @@ public class DefaultWindow extends JFrame {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         setSize(sizeX, sizeY);
+        setLayout(new GridLayout(3, 2));
         setResizable(false);
-        setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        for(int i = 0; i < button.length - 1; i++) {
+        for(int i = 0; i < button.length; i++) {
             button[i] = new JButton();
         }
 
-        for(int i = 0; i < panel.length - 1; i++) {
+        for(int i = 0; i < panel.length; i++) {
             panel[i] = new JPanel();
         }
 
@@ -37,34 +37,50 @@ public class DefaultWindow extends JFrame {
      */
     protected void initWindow() {
         initPanels();
+
+        setVisible(true);
     }
 
     private void initPanels() {
         initWest(panel[0]);
         initEast(panel[1]);
-        initSouth(panel[2]);
+        initSouth(panel[4]);
+        initSwitch(panel[5]);
 
         for(int  i = 0; i < panel.length; i++) {
-            panel[i].setVisible(true);
             add(panel[i]);
         }
     }
 
     private void initWest(JPanel p) {
-        p.setSize((this.sizeX / 2), (this.sizeY / 2 + this.sizeY / 5));
-        p.add(new JLabel("yusss"));
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        TextOutput text = new TextOutput();
+        text.setLabel("Potions: ");
+        text.nextLine();
+        text.setLabel("HP: ");
+        text.addLabel(p);
         printWest(p);
     }
 
     private void initEast(JPanel p) {
-        p.setSize((this.sizeX / 2), (this.sizeY / 2 + this.sizeY / 5));
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        TextOutput text = new TextOutput();
+        text.setLabel("Potions: ");
+        text.nextLine();
+        text.setLabel("HP: ");
+        text.addLabel(p);
         printEast(p);
     }
 
     private void initSouth(JPanel p) {
-        p.setSize(this.sizeX, (this.sizeY - (this.sizeY / 2 + this.sizeY / 5)));
-        p.setLayout(new GridLayout(3, 2));
+        p.setLayout(new GridLayout(2, 2));
         printSouth(p);
+    }
+
+    private void initSwitch(JPanel p) {
+        p.setLayout(new GridLayout());
+
+        p.add(button[4]);
     }
 
     private void printWest(JPanel p) {
@@ -86,7 +102,7 @@ public class DefaultWindow extends JFrame {
     }
 
     public void redraw() {
-        for(int i = 0; i < panel.length - 1; i++) {
+        for(int i = 0; i < panel.length; i++) {
             panel[i].setVisible(false);
             panel[i].removeAll();
             panel[i].setVisible(true);

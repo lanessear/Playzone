@@ -5,6 +5,7 @@ package take01;
  */
 public class Game {
     Window screen;
+    String x;
 
     public Game() {
         screen = new Window();

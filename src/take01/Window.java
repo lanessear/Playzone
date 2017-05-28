@@ -8,11 +8,14 @@ import java.awt.event.ActionListener;
  */
 public class Window implements ActionListener {
     private DefaultWindow screen;
+    private String title;
+    private int x;
+    private int y;
 
     public Window() {
-        String title = "My Game";
-        int x = 800;
-        int y = 550;
+        title = "My Game";
+        x = 800;
+        y = 550;
         screen = new DefaultWindow(title, x, y);
         createActionListener();
     }
@@ -25,5 +28,7 @@ public class Window implements ActionListener {
 
     public void actionPerformed(ActionEvent ae) {
         screen.redraw();
+        screen = new DefaultWindow(title, x, y);
+        createActionListener();
     }
 }
