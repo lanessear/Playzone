@@ -5,6 +5,6 @@ package take01;
  */
 public class Main {
     public static void main(String[] meeps) {
-        System.out.println("yo");
+        new Game();
     }
 }
