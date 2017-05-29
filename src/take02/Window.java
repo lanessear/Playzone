@@ -10,12 +10,13 @@ public class Window extends JFrame {
     private DefaultScreen s;
 
     public Window(int x, int y) {
-        super();
-        s = new DefaultScreen(this);
         setSize(x, y);
-        setLayout(new GridLayout(3, 2));
+        setResizable(false);
+        setLayout(new GridLayout(1, 1));
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        s = new DefaultScreen(this, " \t \tcalculating...\tcalculating...\tcalculating...\t ");
     }
 
     public DefaultScreen getScreen() {
@@ -23,6 +24,8 @@ public class Window extends JFrame {
     }
 
     public void setScreen(DefaultScreen ds) {
+        s.redraw();
+        remove(s);
         s = ds;
     }
 }

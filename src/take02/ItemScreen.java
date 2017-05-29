@@ -5,7 +5,7 @@ package take02;
  */
 public class ItemScreen extends DefaultScreen {
     public ItemScreen(Window w) {
-        super(w);
+        super(w, " ");
         whichWindow = 1;
         w.setTitle("Items");
 

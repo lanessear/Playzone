@@ -1,6 +1,5 @@
 package take02;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
@@ -8,7 +7,7 @@ import java.util.Scanner;
 /**
  * Created by Lanessear on 29.05.2017.
  */
-public class Fight implements ActionListener{
+public class Fight implements ActionListener {
     private Scanner sc = new Scanner(System.in);
     private Window w;
     private Player player;
@@ -20,10 +19,11 @@ public class Fight implements ActionListener{
 
     /**
      * Der Konstruktor für den Kampf.
+     *
      * @param player initialisiert den Spieler, der für diese Klasse verwendet
-     * werden soll.
-     * @param enemy initialisiert das Monster, das für diese Klasse verwendet
-     * werden soll.
+     *               werden soll.
+     * @param enemy  initialisiert das Monster, das für diese Klasse verwendet
+     *               werden soll.
      */
 
     public Fight(Player player, Enemy enemy, Window window) {
@@ -34,38 +34,22 @@ public class Fight implements ActionListener{
     }
 
     /**
-     * Die Methode move prüft, welchen Zug der Spieler wählt. Außerdem prüft sie,
-     * ob eine valide Eingabe getätigt wurde und fragt erneut ab, wenn dies nicht
-     * geschehen ist.
+     * Die Methode move prüft, welchen Zug der Spieler wählt.
+     *
      * @return move gibt zurück, welchen der beiden Züge der Spieler wählt.
      */
 
-    public boolean move() {
-        boolean wrongInput = false;
-        boolean move = true;
+    public int move() {
+        int move = 2;
 
-        do {
-            wrongInput = false;
-            if (!this.end) {
-                System.out.println("Use:\n(0) Potion\n(1) Attack");
-            }
-
-            System.out.print("You enter: ");
-
-            switch (input) {
-                case 0:
-                    move = false;
-                    break;
-                case 1:
-                    move = true;
-                    break;
-                default:
-                    wrongInput = true;
-                    System.out.println("Invalid input!");
-                    System.out.println("--------------");
-            }
-        } while (wrongInput);
-        System.out.println("--------------");
+        switch (input) {
+            case 0:
+                move = 0;
+                break;
+            case 1:
+                move = 1;
+                break;
+        }
         return move;
     }
 
@@ -74,83 +58,96 @@ public class Fight implements ActionListener{
      * die HP des Monsters oder des Spielers auf oder unter 0 gesunken sind.
      * Die Methode führt den Zug des Spielers aus und gibt die jeweiligen Nachrichten
      * aus.
+     *
      * @return end gibt zurück, ob das Spiel beendet werden kann/soll.
      */
 
-    public boolean turn() {
-        boolean end = false;
-        if (!this.move()) {
-            if (player.usePotion()) {
-                w.getScreen().getPanel(3).add(new JLabel("Player used potion and healed for 50 HP."));
-            } else {
-                w.getScreen().getPanel(3).add(new JLabel("No potions left."));
+    public String turn() {
+        String output = "";
+        String extra = " ";
+        if (move() != 2) {
+            if (move() == 1) {
+                if (player.usePotion()) {
+                    output = "Player used potion and healed for 50 HP.";
+                } else {
+                    output = "No potions left.";
+                }
+            } else if (move() == 0) {
+                int initialHpMonster = enemy.getHP();
+                enemy.takeDamage(player.calculateAttackDamage());
+                damage = initialHpMonster - enemy.getHP();
+                if (enemy.getHP() <= 0) {
+                    enemy.setHP(0);
+                    output = "Monster took " + damage + " damage from Player and is defeated.\tPlayer wins!";
+                    end = true;
+                } else {
+                    output = "Monster took " + damage + " damage from Player!";
+                }
             }
-        } else {
-            int initialHpMonster = enemy.getHP();
-            enemy.takeDamage(player.calculateAttackDamage());
-            damage = initialHpMonster - enemy.getHP();
-            if (enemy.getHP() <= 0) {
-                w.getScreen().getPanel(3).add(new JLabel("Monster took " + damage + " damage from "
-                        + "Player and is defeated." + "\nPlayer wins!"));
-                end = true;
-            } else {
-                w.getScreen().getPanel(1).add(new JLabel("Monster took " + damage + " damage from Player!"));
-            }
-        }
 
-        if (!end) {
-            int initialHpMonster = enemy.getHP();
-            int initialHpPlayer = player.getHP();
-            player.takeDamage(enemy.calculateAttackDamage());
-            damage = initialHpPlayer - player.getHP();
-            if (player.getHP() <= 0) {
-                w.getScreen().getPanel(3).add(new JLabel("Player took " + damage + " damage from "
-                        + "Enemy and is defeated." + "\nPlayer loses!"));
-                end = true;
-            } else {
-                w.getScreen().getPanel(1).add(new JLabel("Player took " + damage + " damage from Enemy!"));
-                if (initialHpMonster < enemy.getHP()) {
-                    w.getScreen().getPanel(1).add(new JLabel("Monster healed for " + damage + " HP."));
+            if (!end) {
+                int initialHpMonster = enemy.getHP();
+                int initialHpPlayer = player.getHP();
+                player.takeDamage(enemy.calculateAttackDamage());
+                damage = initialHpPlayer - player.getHP();
+                if (player.getHP() <= 0) {
+                    player.setHP(0);
+                    output = output + "\tPlayer took " + damage + " damage from Enemy and is defeated.\tPlayer loses!";
+                } else {
+                    output = output + "\tPlayer took " + damage + " damage from Enemy!";
+                    if (initialHpMonster < enemy.getHP()) {
+                        extra = "Monster healed for " + damage + " HP.";
+                    }
                 }
             }
         }
-
-        return end;
+        output = output + "\t" + player.getHealPotions();
+        output = output + "\t" + player.getHP();
+        output = output + "\t" + enemy.getHP();
+        output = output + "\t" + extra;
+        return output;
     }
 
     private void createActionListener() {
-        for(int i = 0; i < w.getScreen().getButtonLength(); i++) {
+        for (int i = 0; i < w.getScreen().getButtonLength(); i++) {
             w.getScreen().getButton(i).addActionListener(this);
         }
     }
 
     public void actionPerformed(ActionEvent ae) {
-        w.getScreen().redraw();
-        switch(w.getScreen().whichWindow) {
+        switch (w.getScreen().whichWindow) {
             case 0:
-                if(ae.getSource() == w.getScreen().getButton(0)) {
-                    input = 1;
-                    w.setScreen(new DefaultScreen(w));
-                } else if(ae.getSource() == w.getScreen().getButton(1)) {
+                if (ae.getSource() == w.getScreen().getButton(0)) {
+                    System.out.println("Button 1");
+                    if(player.getHP() == 0 || enemy.getHP() == 0) {
+                        return;
+                    }
                     input = 0;
-                    w.setScreen(new DefaultScreen(w));
-                } else if(ae.getSource() == w.getScreen().getButton(2)) {
-                    input = 5;
-                    w.setScreen(new ItemScreen(w));
+                } else if (ae.getSource() == w.getScreen().getButton(1)) {
+                    System.out.println("Button 2");
+                    if(player.getHP() == 0 || enemy.getHP() == 0) {
+                        return;
+                    }
+                    input = 1;
+                } else if (ae.getSource() == w.getScreen().getButton(2)) {
+                    System.out.println("Button 3");
                 }
+                w.setScreen(new DefaultScreen(w, turn()));
                 break;
             case 1:
-                if(ae.getSource() == w.getScreen().getButton(0)) {
-                    w.setScreen(new ItemScreen(w));
-                } else if(ae.getSource() == w.getScreen().getButton(1)) {
-                    w.setScreen(new ItemScreen(w));
-                } else if(ae.getSource() == w.getScreen().getButton(2)) {
-                    input = 5;
-                    w.setScreen(new DefaultScreen(w));
+                if (ae.getSource() == w.getScreen().getButton(0)) {
+                } else if (ae.getSource() == w.getScreen().getButton(1)) {
+                } else if (ae.getSource() == w.getScreen().getButton(2)) {
+                    w.setScreen(new DefaultScreen(w, turn()));
+                    createActionListener();
+                    return;
                 }
+                w.setScreen(new ItemScreen(w));
                 break;
-            default: return;
+            default:
+                return;
         }
         createActionListener();
     }
+
 }

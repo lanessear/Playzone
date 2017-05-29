@@ -1,11 +1,14 @@
 package take02;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 
 /**
  * Created by Lanessear on 29.05.2017.
  */
 public class Main {
+    private static Fight fight;
     public static void main(String[] meeps) {
         int playerHP = 0;
         int playerATK = 0;
@@ -35,21 +38,21 @@ public class Main {
                     case 0:
                         if (playerHP <= 0) {
                             System.out.println("The HP are too low.");
+                            return;
                         }
-                        break;
                     case 1:
-                        if (playerATK <= 0) {
-                            System.out.println("The ATK is too low.");
-                        }
-                        break;
+                    if (playerATK <= 0) {
+                        System.out.println("The ATK is too low.");
+                        return;
+                    }
                     case 2:
-                        if (playerHIT <= 0) {
-                            System.out.println("The HIT is too low.");
-                        }
-                        if (playerHIT >= 100) {
-                            System.out.println("The HIT is too high.");
-                        }
-                        break;
+                    if (playerHIT <= 0) {
+                        System.out.println("The HIT is too low.");
+                    }
+                    if (playerHIT >= 100) {
+                        System.out.println("The HIT is too high.");
+                        return;
+                    }
                 }
             }
         }
@@ -87,19 +90,6 @@ public class Main {
             System.out.println("healing enemy.");
         }
 
-        Fight fight = new Fight(player, enemy, window);
-
-        /**
-         * Start des Spiels
-         */
-
-        while (!end) {
-            System.out.println("--------------");
-            System.out.println("Potions left: " + player.getHealPotions());
-            System.out.println("Player HP: " + player.toString());
-            System.out.println("Enemy HP: " + enemy.toString());
-            System.out.println("--------------");
-            end = fight.turn();
-        }
+        fight = new Fight(player, enemy, window);
     }
 }

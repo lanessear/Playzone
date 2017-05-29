@@ -34,6 +34,10 @@ public class Entity {
         return hp;
     }
 
+    public void setHP(int hp) {
+        this.hp = hp;
+    }
+
     /**
      * Getter atk
      * @return atk gibt die Schadenspunkte des Charakters zurück.
