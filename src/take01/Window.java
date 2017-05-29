@@ -1,34 +1,48 @@
 package take01;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 /**
  * Created by Lanessear on 28.05.2017.
  */
-public class Window implements ActionListener {
+public class Window {
     private DefaultWindow screen;
+    private Player player;
+    private Enemy enemy;
     private String title;
     private int x;
     private int y;
 
-    public Window() {
+    public Window(Player player, Enemy enemy) {
         title = "My Game";
         x = 800;
         y = 550;
-        screen = new DefaultWindow(title, x, y);
-        createActionListener();
+        this.player = player;
+        this.enemy = enemy;
+        screen = new DefaultWindow(title, x, y, player.getPotions(), player.getHp(), enemy.getHp());
     }
 
-    public void createActionListener() {
-        for(int i = 0; i < screen.getButtonLength(); i++) {
-            screen.getButton(i).addActionListener(this);
-        }
+    public DefaultWindow getScreen() {
+        return screen;
     }
 
-    public void actionPerformed(ActionEvent ae) {
-        screen.redraw();
-        screen = new DefaultWindow(title, x, y);
-        createActionListener();
+    public void defaultWindow() {
+        screen.dispose();
+        screen = new DefaultWindow(title, x, y, player.getPotions(), player.getHp(), enemy.getHp());
+    }
+
+    public void itemWindow() {
+        screen.dispose();
+        screen = new ItemWindow(title, x, y);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
