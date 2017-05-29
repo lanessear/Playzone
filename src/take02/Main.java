@@ -61,8 +61,8 @@ public class Main {
         boolean end = false;
 
         Player player = new Player(playerHP, playerATK, playerHIT);
-        Enemy enemy = new Enemy(0, 0, 0
-        );
+        Enemy enemy = new Enemy(0, 0, 0);
+        Window window = new Window(800, 550);
 
         System.out.print("You fight against the ");
 
@@ -87,7 +87,7 @@ public class Main {
             System.out.println("healing enemy.");
         }
 
-        Fight fight = new Fight(player, enemy);
+        Fight fight = new Fight(player, enemy, window);
 
         /**
          * Start des Spiels
