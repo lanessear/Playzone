@@ -14,9 +14,9 @@ public class Board {
         initBoard(players);
     }
 
-    private void initBoard(String[] x) {
-        this.players = x.length;
-        this.wrath = x.length * 2 - 1;
+    private void initBoard(String[] numOfPlayers) {
+        this.players = numOfPlayers.length;
+        this.wrath = numOfPlayers.length * 2 - 1;
         this.segments = players;
         this.spawn_points = segments;
 
@@ -24,12 +24,12 @@ public class Board {
         this.segment = new Segment[segments];
         this.spawn_point = new Spawn_Point[spawn_points];
 
-        choosePlayer(x);
+        initPlayer(numOfPlayers);
     }
 
-    private void choosePlayer(String[] names) {
+    private void initPlayer(String[] names) {
         for (int i = 0; i < player.length; i++) {
-            player[i].setHero(names[i]);
+            player[i] = new Player(names[i]);
         }
     }
 }
