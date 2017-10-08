@@ -1,7 +1,5 @@
 package take02;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Scanner;
 
 /**
@@ -9,6 +7,7 @@ import java.util.Scanner;
  */
 public class Main {
     private static Fight fight;
+
     public static void main(String[] meeps) {
         int playerHP = 0;
         int playerATK = 0;
@@ -41,18 +40,19 @@ public class Main {
                             return;
                         }
                     case 1:
-                    if (playerATK <= 0) {
-                        System.out.println("The ATK is too low.");
-                        return;
-                    }
+                        if (playerATK <= 0) {
+                            System.out.println("The ATK is too low.");
+                            return;
+                        }
                     case 2:
-                    if (playerHIT <= 0) {
-                        System.out.println("The HIT is too low.");
-                    }
-                    if (playerHIT >= 100) {
-                        System.out.println("The HIT is too high.");
-                        return;
-                    }
+                        if (playerHIT <= 0) {
+                            System.out.println("The HIT is too low.");
+                            return;
+                        }
+                        if (playerHIT >= 100) {
+                            System.out.println("The HIT is too high.");
+                            return;
+                        }
                 }
             }
         }

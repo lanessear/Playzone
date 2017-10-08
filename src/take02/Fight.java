@@ -50,6 +50,7 @@ public class Fight implements ActionListener {
                 move = 1;
                 break;
         }
+        System.out.println("move: " + move);
         return move;
     }
 
@@ -100,6 +101,8 @@ public class Fight implements ActionListener {
                     }
                 }
             }
+        } else {
+            output = " \t ";
         }
         output = output + "\t" + player.getHealPotions();
         output = output + "\t" + player.getHP();
@@ -118,19 +121,17 @@ public class Fight implements ActionListener {
         switch (w.getScreen().whichWindow) {
             case 0:
                 if (ae.getSource() == w.getScreen().getButton(0)) {
-                    System.out.println("Button 1");
                     if(player.getHP() == 0 || enemy.getHP() == 0) {
                         return;
                     }
                     input = 0;
                 } else if (ae.getSource() == w.getScreen().getButton(1)) {
-                    System.out.println("Button 2");
                     if(player.getHP() == 0 || enemy.getHP() == 0) {
                         return;
                     }
                     input = 1;
                 } else if (ae.getSource() == w.getScreen().getButton(2)) {
-                    System.out.println("Button 3");
+                    input = 2;
                 }
                 w.setScreen(new DefaultScreen(w, turn()));
                 break;
